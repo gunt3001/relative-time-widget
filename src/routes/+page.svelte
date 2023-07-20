@@ -65,7 +65,7 @@
 </script>
 
 <div class="w-screen p-2 bg-transparent">
-	<div class="w-full border rounded-lg p-4 text-black bg-slate-50 ">
+	<div class="w-full border rounded-lg p-4 text-black bg-slate-50 dark:bg-slate-900 dark:text-white">
 		<b
 			>📅
 			{#if timeSince === null}
@@ -98,7 +98,7 @@
 	</div>
 
 	{#if !isInIframe()}
-		<div class="w-full border rounded-lg p-4 mt-4 text-black dark:bg-slate-900 dark:text-white">
+		<div class="w-full border rounded-lg p-4 text-black dark:bg-slate-900 dark:text-white">
 			<div class="flex justify-between items-center mb-2">
 				<span class="text-gray-400">Embed code:</span>
 				<button
