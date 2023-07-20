@@ -81,7 +81,7 @@
 				<span>
 					{#if timeSince.years > 0 && timeSince.months > 1}
 						and {timeSince.months} months
-					{:else if timeSince.years > 0 && timeSince.years == 1}
+					{:else if timeSince.years > 0 && timeSince.months == 1}
 						and a month
 					{:else if timeSince.months > 1}
 						{timeSince.months} months
