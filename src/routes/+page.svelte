@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+    import { browser } from '$app/environment';
 
 	const timeParam = getTimeParam();
 	const timeSince = calculateTimeSince(timeParam);
@@ -23,7 +24,11 @@
 	}
 
 	function getTimeParam(): string | null {
-		let timestamp = $page.url.searchParams.get('since');
+        if (!browser) {
+            return null;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+		const timestamp = urlParams.get('since');
 		if (timestamp === null || timestamp.length != 7) {
 			return null;
 		}
