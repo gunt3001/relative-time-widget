@@ -1,6 +1,105 @@
 <script lang="ts">
-	console.log('Hello from JS!');
+	import { page } from '$app/stores';
+
+	const timeParam = getTimeParam();
+	const timeSince = calculateTimeSince(timeParam);
+
+	function isInIframe(): boolean {
+		try {
+			return window.self !== window.top;
+		} catch (e) {
+			return true;
+		}
+	}
+
+	function getEmbedCode(): string {
+		const url = $page.url;
+
+		return `<iframe src="${url.toString()}" allowTransparency="true" title="Relative Time Widget" />`;
+	}
+
+	function setClipboard(text: string): void {
+		navigator.clipboard.writeText(text);
+	}
+
+	function getTimeParam(): string | null {
+		let timestamp = $page.url.searchParams.get('since');
+		if (timestamp === null || timestamp.length != 7) {
+			return null;
+		}
+		return timestamp;
+	}
+
+	function calculateTimeSince(dateString: string | null): { years: number; months: number } | null {
+		if (dateString === null) {
+			return null;
+		}
+
+		const inputDate = new Date(dateString + '-01');
+		const currentDate = new Date();
+
+		if (inputDate > currentDate) {
+			return null;
+		}
+
+		let years = currentDate.getFullYear() - inputDate.getFullYear();
+		let months = currentDate.getMonth() - inputDate.getMonth();
+		const day = currentDate.getDate() - inputDate.getDate();
+
+		if (day < 0) {
+			months--;
+		}
+
+		if (months < 0) {
+			months += 12;
+			years--;
+		}
+
+		return { years: years, months: months };
+	}
 </script>
 
-<h1 class="text-red-500">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="w-screen p-2 bg-transparent">
+	<div class="w-full border rounded-lg p-4 text-black dark:bg-slate-900 dark:text-white">
+		<b
+			>📅
+			{#if timeSince === null}
+				The time is <a class="underline" href="https://www.youtube.com/watch?v=svjMiqVeiG8">NOW!</a>
+			{:else}
+				<span>
+					{#if timeSince.years > 1}
+						{timeSince.years} years
+					{:else if timeSince.years == 1}
+						a year
+					{/if}
+				</span>
+				<span>
+					{#if timeSince.months > 1}
+						and {timeSince.months} months
+					{:else if timeSince.years == 1}
+						and a month
+					{/if}
+				</span>
+				ago.
+			{/if}
+		</b>
+	</div>
+
+	{#if !isInIframe()}
+		<div class="w-full border rounded-lg p-4 text-black dark:bg-slate-900 dark:text-white">
+			<div class="flex justify-between items-center mb-2">
+				<span class="text-gray-400">Embed code:</span>
+				<button
+					on:click={(_) => setClipboard(getEmbedCode())}
+					class="code bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1 rounded-md"
+				>
+					Copy
+				</button>
+			</div>
+			<div class="overflow-x-auto">
+				<pre class="text-gray-300">
+<code>{getEmbedCode()}</code></pre>
+			</div>
+		</div>
+	{/if}
+</div>
