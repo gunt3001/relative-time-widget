@@ -16,7 +16,7 @@
 	function getEmbedCode(): string {
 		const url = $page.url;
 
-		return `<iframe src="${url.toString()}" allowTransparency="true" title="Relative Time Widget" />`;
+		return `<iframe src="${url.toString()}" allowTransparency="true" title="Relative Time Widget" frameborder="0" marginwidth="0" marginheight="0" scrolling="NO" width="100%" height="80"></iframe>`;
 	}
 
 	function setClipboard(text: string): void {
@@ -89,7 +89,7 @@
 						A month
 					{/if}
 				</span>
-				{#if (timeSince.years <= 0 && timeSince.months <= 0)}
+				{#if timeSince.years <= 0 && timeSince.months <= 0}
 					<span>Less than a month </span>
 				{/if}
 				ago.
