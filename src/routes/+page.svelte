@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-    import { browser } from '$app/environment';
+	import { browser } from '$app/environment';
 
 	const timeParam = getTimeParam();
 	const timeSince = calculateTimeSince(timeParam);
@@ -24,10 +24,10 @@
 	}
 
 	function getTimeParam(): string | null {
-        if (!browser) {
-            return null;
-        }
-        const urlParams = new URLSearchParams(window.location.search);
+		if (!browser) {
+			return null;
+		}
+		const urlParams = new URLSearchParams(window.location.search);
 		const timestamp = urlParams.get('since');
 		if (timestamp === null || timestamp.length != 7) {
 			return null;
@@ -75,16 +75,23 @@
 					{#if timeSince.years > 1}
 						{timeSince.years} years
 					{:else if timeSince.years == 1}
-						a year
+						A year
 					{/if}
 				</span>
 				<span>
-					{#if timeSince.months > 1}
+					{#if timeSince.years > 0 && timeSince.months > 1}
 						and {timeSince.months} months
-					{:else if timeSince.years == 1}
+					{:else if timeSince.years > 0 && timeSince.years == 1}
 						and a month
+					{:else if timeSince.months > 1}
+						{timeSince.months} months
+					{:else if timeSince.months == 1}
+						A month
 					{/if}
 				</span>
+				{#if (timeSince.years <= 0 && timeSince.months <= 0)}
+					<span>Less than a month </span>
+				{/if}
 				ago.
 			{/if}
 		</b>
