@@ -27,12 +27,11 @@
 		if (!browser) {
 			return null;
 		}
-		const urlParams = new URLSearchParams(window.location.search);
-		const timestamp = urlParams.get('since');
-		if (timestamp === null || timestamp.length != 7) {
+		const hash = window.location.hash.substring(1); // Remove the leading '#'
+		if (hash.length != 7) {
 			return null;
 		}
-		return timestamp;
+		return hash;
 	}
 
 	function calculateTimeSince(dateString: string | null): { years: number; months: number } | null {
