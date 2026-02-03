@@ -1,3 +1,8 @@
+> [!WARNING]
+> **This repository has been archived.** This widget has been consolidated into a unified widgets collection.
+>
+> 🔗 **New repository:** [gunt3001/widgets](https://github.com/gunt3001/widgets)
+
 # Relative Date Widget
 
 A small HTML widget that display how many years and months since some specific date.
